@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Nice font -->
-    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.min.css">
     <title>Tic Tac Toe</title>
 </head>
@@ -27,6 +27,7 @@
             </button>
         </div>
         <button class="button button-orange" id="play-btn">Play!</button>
+        <button style="display: none;" class="button button-orange" id="continue-btn">Continue</button>
     </div>
     <div style="display: none;" id="game">
         <h2 id="winner"></h2>
@@ -47,7 +48,10 @@
                 <td class="cell cell-2 blank" id="22"></td>
             </tr>
         </table>
-        <button class="button button-aqua" id="reset-button">Reset</button>
+        <div id="game-buttons">
+            <button class="button button-aqua" id="reset-button">Reset</button>
+            <button class="button button-orange" id="settings">Settings</button>
+        </div>
     </div>
     <!-- Dark mode button (goes in the bottom right) -->
 	<button class="button button-filled-dark" id="dark-mode-button">Dark Mode! 😎</button>

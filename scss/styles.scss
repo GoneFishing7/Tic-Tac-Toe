@@ -19,7 +19,7 @@ $colors: (
 
 $light-colors: (
     "aqua": rgb(131, 190, 177),
-    "orange": rgb(255, 202, 111),
+    "orange": rgb(255, 159, 50),
     "purple": rgb(143, 134, 185),
     "gray": rgb(202, 186, 184),
     "dark": $dark-background-color,
@@ -125,12 +125,13 @@ body {
     height: $square-length*2;
     .cell {
         // Nice mono font
-        font-family: 'Anonymous Pro', monospace;
+        font-family: 'Source Code Pro', monospace;
+        font-weight: 200;
         // Keep width and height 
         height: $square-length;
         width: $square-length;
         // Set font size to 5/6 of the square
-        font-size: $square-length*(5/6);
+        font-size: $square-length*(7/10);
         // Center
         text-align: center;
         // Make text unselectable
@@ -160,6 +161,10 @@ body {
         border-right: $board-line-width solid;
     }
     // END: Add lines
+}
+
+#game-buttons > button {
+    margin: 8px 2px;
 }
 
 #dark-mode-button {

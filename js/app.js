@@ -9,6 +9,7 @@ var movingFirst;
 var board;
 var turn;
 var gameOver;
+var playerIsOForNextGame;
 const DEBUG_MODE = false;
 
 $(document).ready(function () {
@@ -138,14 +139,42 @@ $(document).ready(function () {
         }
     };
 
+    $("#settings").on('click', function () {
+        $("#play-btn").hide();
+        $("#start-menu").show();
+        $("#continue-btn").show();
+        $("#game").hide();
+    });
+
+    $("#continue-btn").on('click', function () {
+        $("#start-menu").hide();
+        // Check who is o and set symbols accordingly
+        playerIsOForNextGame = $("#who-is-o .selected").attr("id").replace("-is-o", "") == "ply";
+        // Check who is moving first
+        movingFirst = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
+        movingFirst = movingFirst == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirst;
+        $("#game").show();
+    });
+
     // Reset button
     $("#reset-button").on('click', function () {
         board = new Board();
+        if (playerIsOForNextGame) {
+            symbols["player"] = 'O';
+            symbols["computer"] = 'X';
+        } else {
+            symbols["player"] = 'X';
+            symbols["computer"] = 'O';
+        }
         $(".cell").addClass("blank");
         $("#winner").text("");
         renderBoard(board);
         turn = movingFirst;
         gameOver = false;
+        if (turn === "com") {
+            makeComMove();
+            turn = "ply";
+        }
     });
 
     function announceWinner(winner) {
