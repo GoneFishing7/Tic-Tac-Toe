@@ -5,6 +5,7 @@ var symbols = {
     "blank": " "
 }
 
+var movingFirstInput;
 var movingFirst;
 var board;
 var turn;
@@ -20,6 +21,7 @@ $(document).ready(function () {
         $("#start-menu").hide();
         // Check who is o and set symbols accordingly
         let playerIsO = $("#who-is-o .selected").attr("id").replace("-is-o", "") == "ply";
+        playerIsOForNextGame = playerIsO;
         if (playerIsO) {
             symbols["player"] = 'O';
             symbols["computer"] = 'X';
@@ -28,8 +30,9 @@ $(document).ready(function () {
             symbols["computer"] = 'O';
         }
         // Check who is moving first
-        movingFirst = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
-        movingFirst = movingFirst == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirst;
+        movingFirstInput = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
+        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
+        turn = movingFirst;
         // Show the game page
         $("#game").show();
         // Init board
@@ -64,52 +67,66 @@ $(document).ready(function () {
         if ($(this).hasClass("selected")) {
             return;
         }
-        $("#who-is-moving-first .toggle").removeClass("selected button-filled-purple").addClass("button-gray");
-        $(this).addClass("selected button-filled-purple").removeClass("button-gray");
+        $("#who-is-moving-first .toggle").removeClass("selected button-filled-green").addClass("button-gray");
+        $(this).addClass("selected button-filled-green").removeClass("button-gray");
     });
 
-    $(".cell").on("click", function() {
-        if (!$(this).hasClass("blank")) {
-            return;
-        }
-        if (turn === 'com' || gameOver) {
-            console.log({ turn, gameOver });
-            return;
-        } else {
-            turn = 'com';
-        }
-        $(this).removeClass('blank');
-        let id = $(this).attr("id");
-        let row = id.charAt(0);
-        let cell = id.charAt(1);
-        board.setSquare(symbols["player"], row, cell);
-        renderBoard(board);
-        // Check for win
-        state = board.getGameState()
-        if (state !== symbols['blank']) {
-            let winner = state === symbols['player'] ? "Player" : "Computer";
-            gameOver = true;
-            announceWinner(winner);
-            return;
-        } else if (board.getBlankSquares().length == 0) {
-            let winner = "Tie";
-            gameOver = true;
-            announceWinner(winner);
-            return;
-        }
-        makeComMove();
-        // Check for win again
-        state = board.getGameState()
-        if (state !== symbols['blank']) {
-            let winner = state === symbols['player'] ? "Player" : "Computer";
-            gameOver = true;
-            announceWinner(winner);
-            return;
-        } else if (board.getBlankSquares().length == 0) {
-            let winner = "Tie";
-            gameOver = true;
-            announceWinner(winner);
-            return;
+    $(".cell").on({
+        click: function() {
+            if (!$(this).hasClass("blank")) {
+                return;
+            }
+            if (turn === 'com' || gameOver) {
+                return;
+            } else {
+                turn = 'com';
+            }
+            $(this).removeClass('blank preview-move');
+            let id = $(this).attr("id");
+            let row = id.charAt(0);
+            let cell = id.charAt(1);
+            board.setSquare(symbols["player"], row, cell);
+            renderBoard(board);
+            // Check for win
+            state = board.getGameState()
+            if (state !== symbols['blank']) {
+                let winner = state === symbols['player'] ? "Player" : "Computer";
+                gameOver = true;
+                announceWinner(winner);
+                return;
+            } else if (board.getBlankSquares().length == 0) {
+                let winner = "Tie";
+                gameOver = true;
+                announceWinner(winner);
+                return;
+            }
+            makeComMove();
+            // Check for win again
+            state = board.getGameState()
+            if (state !== symbols['blank']) {
+                let winner = state === symbols['player'] ? "Player" : "Computer";
+                gameOver = true;
+                announceWinner(winner);
+                return;
+            } else if (board.getBlankSquares().length == 0) {
+                let winner = "Tie";
+                gameOver = true;
+                announceWinner(winner);
+                return;
+            }
+        },
+        mouseenter: function () {
+            let isBlank = $(this).hasClass("blank");
+            if ($(this).hasClass("blank") && turn === "ply") {
+                $(this).text(symbols['player']);
+                $(this).addClass("preview-move");
+            }
+        },
+        mouseleave: function () {
+            if ($(this).hasClass("blank") && turn === "ply") {
+                $(this).text(symbols['blank']);
+                $(this).removeClass("preview-move");
+            }
         }
     });
 
@@ -151,8 +168,8 @@ $(document).ready(function () {
         // Check who is o and set symbols accordingly
         playerIsOForNextGame = $("#who-is-o .selected").attr("id").replace("-is-o", "") == "ply";
         // Check who is moving first
-        movingFirst = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
-        movingFirst = movingFirst == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirst;
+        movingFirstInput = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
+        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
         $("#game").show();
     });
 
@@ -169,6 +186,7 @@ $(document).ready(function () {
         $(".cell").addClass("blank");
         $("#winner").text("");
         renderBoard(board);
+        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
         turn = movingFirst;
         gameOver = false;
         if (turn === "com") {

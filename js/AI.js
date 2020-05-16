@@ -28,7 +28,6 @@ class AI {
             console.log("Something bad happened!");
             return null;
         }
-        console.log({ bestMoveEval });
         let bestMove = Utils.randomElementFromArray(bestMoves);
         return bestMove;
     }

@@ -9,14 +9,14 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
+    <h1 id="page-title">&gt;tic tac toe<span class="blinking">_</span></h1>
     <div id="start-menu">
-        <h1 id="play-header">&gt;tic tac toe<span class="blinking">_</span></h1>
         <div id="who-is-o">
             <button id="ply-is-o" class="toggle button button-filled-aqua selected">Player is O</button>
             <button id="com-is-o" class="toggle button button-gray">Computer is O</button>
         </div>
         <div id="who-is-moving-first">
-            <button id="ply-is-moving-first" class="toggle button button-filled-purple selected">
+            <button id="ply-is-moving-first" class="toggle button button-filled-green selected">
                 Player is moving first
             </button>
             <button id="com-is-moving-first" class="toggle button button-gray">
@@ -26,11 +26,10 @@
                 Random player is moving first
             </button>
         </div>
-        <button class="button button-orange" id="play-btn">Play!</button>
-        <button style="display: none;" class="button button-orange" id="continue-btn">Continue</button>
+        <button class="button button-purple" id="play-btn">Play!</button>
+        <button style="display: none;" class="button button-purple" id="continue-btn">Continue</button>
     </div>
     <div style="display: none;" id="game">
-        <h2 id="winner"></h2>
         <table id="board">
             <tr class="row" id="row-0">
                 <td class="cell cell-0 blank" id="00"></td>
@@ -52,6 +51,7 @@
             <button class="button button-aqua" id="reset-button">Reset</button>
             <button class="button button-orange" id="settings">Settings</button>
         </div>
+        <h2 id="winner"></h2>
     </div>
     <!-- Dark mode button (goes in the bottom right) -->
 	<button class="button button-filled-dark" id="dark-mode-button">Dark Mode! 😎</button>

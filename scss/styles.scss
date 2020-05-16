@@ -13,15 +13,17 @@ $colors: (
     "orange": #FBA100,
     "purple": #6C648B,
     "gray": #B6A19E,
+    "green": #A4D555,
     "dark": $dark-background-color,
     "light": #F5F2D0
 );
 
 $light-colors: (
     "aqua": rgb(131, 190, 177),
-    "orange": rgb(255, 159, 50),
+    "orange": #FBA100,
     "purple": rgb(143, 134, 185),
     "gray": rgb(202, 186, 184),
+    "green": rgb(120, 155, 65),
     "dark": $dark-background-color,
     "light": rgb(245, 242, 208)
 );
@@ -144,6 +146,10 @@ body {
             cursor: pointer;
             background-color: darken($light-background-color, 5);
         }
+
+        &.preview-move {
+            opacity: 0.6;
+        }
         &.dark {
             border-color: map-get($colors, "light");
             &:hover {
@@ -173,7 +179,7 @@ body {
 	bottom: 10px;
 }
 
-#play-header {
+#page-title, #winner {
     font-family: monospace;
 }
 
