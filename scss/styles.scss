@@ -1,0 +1,182 @@
+$board-line-width: 2px;
+$square-length: 120px;
+
+$light-background-color: white;
+$dark-background-color: #2D2D2D;
+
+$dark-mode-font-color: #FFFFFF;
+
+$default-button-color: #707070;
+
+$colors: (
+    "aqua": #6BBAA7,
+    "orange": #FBA100,
+    "purple": #6C648B,
+    "gray": #B6A19E,
+    "dark": $dark-background-color,
+    "light": #F5F2D0
+);
+
+$light-colors: (
+    "aqua": rgb(131, 190, 177),
+    "orange": rgb(255, 202, 111),
+    "purple": rgb(143, 134, 185),
+    "gray": rgb(202, 186, 184),
+    "dark": $dark-background-color,
+    "light": rgb(245, 242, 208)
+);
+
+$button-height: 60px;
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    &.dark {
+        background-color: $dark-background-color;
+        color: $dark-mode-font-color;
+    }
+}
+
+.button {
+    box-shadow: none;
+    height: $button-height;
+    font-size: $button-height*(3/10);
+    border-radius: 10px;
+    outline: none;
+    border: 1px $default-button-color solid;
+    color: $default-button-color;
+    transition: 0.2s;
+    background-color: $light-background-color;
+    &:hover {
+        cursor: pointer;
+        background-color: $default-button-color;
+        color: $light-background-color;
+    }
+    &.dark:hover {
+        background-color: $dark-background-color;
+        color: $dark-mode-font-color;
+        border-color: $dark-mode-font-color;
+    }
+}
+
+@each $color, $value in $colors {
+    // Buttons
+    .button-#{$color} {
+        border-color: $value;
+        color: $value;
+        &:hover {
+            cursor: pointer;
+            background-color: $value;
+            color: $light-background-color;
+        }
+        &.dark {
+            background-color: $dark-background-color;
+            border-color: map-get($light-colors, $color);
+            color: map-get($light-colors, $color);
+            &:hover {
+                background-color: map-get($light-colors, $color);
+                color: $dark-mode-font-color;
+                @if $color == "light" {
+                    color: map-get($light-colors, "dark");
+                }
+            }
+        }
+    }
+    .button-filled-#{$color} {
+        border-style: none;
+        background-color: $value;
+        color: $light-background-color;
+        &:hover {
+            color: $value;
+            background-color: $light-background-color;
+            border-style: solid;
+            border-color: $value;
+        }
+        &.dark {
+            background-color: map-get($light-colors, $color);
+            &:hover {
+                border-color: map-get($light-colors, $color);
+                color: map-get($light-colors, $color);
+            }
+        }
+    }
+}
+
+#start-menu {
+    // Flexbox stuff
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    & > * {
+        margin: 5px 20vw;
+    }
+}
+
+#board {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0px auto;
+    width: $square-length*2;
+    height: $square-length*2;
+    .cell {
+        // Nice mono font
+        font-family: 'Anonymous Pro', monospace;
+        // Keep width and height 
+        height: $square-length;
+        width: $square-length;
+        // Set font size to 5/6 of the square
+        font-size: $square-length*(5/6);
+        // Center
+        text-align: center;
+        // Make text unselectable
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+        // Nice link style hover effects
+        &:hover {
+            cursor: pointer;
+            background-color: darken($light-background-color, 5);
+        }
+        &.dark {
+            border-color: map-get($colors, "light");
+            &:hover {
+                background-color: lighten($dark-background-color, 5);
+            }
+        }
+    }
+    // START: Add lines
+    #row-1 .cell {
+        border-top: $board-line-width solid;
+        border-bottom: $board-line-width solid;
+    }
+    .cell-1 {
+        border-left: $board-line-width solid;
+        border-right: $board-line-width solid;
+    }
+    // END: Add lines
+}
+
+#dark-mode-button {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+}
+
+#play-header {
+    font-family: monospace;
+}
+
+.blinking {
+    animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+    0%, 49.9%, 100%   { opacity: 0; }
+    50%, 99.9% { opacity: 1; }
+}
