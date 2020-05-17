@@ -88,7 +88,7 @@ $(document).ready(function () {
             board.setSquare(symbols["player"], row, cell);
             renderBoard(board);
             // Check for win
-            state = board.getGameState()
+            let state = board.getGameState()
             if (state !== symbols['blank']) {
                 let winner = state === symbols['player'] ? "Player" : "Computer";
                 gameOver = true;

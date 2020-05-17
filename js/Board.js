@@ -1,7 +1,7 @@
 class Board {
-    squares = [];
 
     constructor(mode) {
+        this.squares = [];
         if (mode == "DEBUG") {
             this.initDebugBoard();
         } else {
@@ -10,6 +10,7 @@ class Board {
     }
 
     initSquares() {
+        this.squares = [];
         for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
             let row = [];
             for (let cellIndex = 0; cellIndex < 3; cellIndex++) {
