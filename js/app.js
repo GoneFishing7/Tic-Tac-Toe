@@ -67,8 +67,8 @@ $(document).ready(function () {
         if ($(this).hasClass("selected")) {
             return;
         }
-        $("#who-is-moving-first .toggle").removeClass("selected button-filled-green").addClass("button-gray");
-        $(this).addClass("selected button-filled-green").removeClass("button-gray");
+        $("#who-is-moving-first .toggle").removeClass("selected button-filled-purple").addClass("button-gray");
+        $(this).addClass("selected button-filled-purple").removeClass("button-gray");
     });
 
     $(".cell").on({
