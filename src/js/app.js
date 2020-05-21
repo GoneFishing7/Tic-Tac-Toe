@@ -146,13 +146,13 @@ $(document).ready(function () {
                 let $element = $(DARK_MODE_TOGGLEABLE_ELEMENTS[i]);
                 $element.addClass("dark");
             }
-            $darkModeBtn.removeClass("button-filled-dark").addClass("button-light")
+            $darkModeBtn.removeClass("button-filled-dark").addClass("button-filled-light")
         } else {
             for (let i = 0; i < DARK_MODE_TOGGLEABLE_ELEMENTS.length; i++) {
                 let $element = $(DARK_MODE_TOGGLEABLE_ELEMENTS[i]);
                 $element.removeClass("dark");
             }
-            $darkModeBtn.addClass("button-filled-dark").removeClass("button-light")
+            $darkModeBtn.addClass("button-filled-dark").removeClass("button-filled-light")
         }
     };
 

@@ -1,0 +1,14 @@
+#start-menu {
+    // Flexbox stuff
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    & > * {
+        margin: 10px 20vw;
+    }
+}
+
+#game-buttons > button {
+    margin: 8px 2px;
+}

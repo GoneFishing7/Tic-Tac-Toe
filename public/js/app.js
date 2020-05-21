@@ -148,13 +148,13 @@ $(document).ready(function () {
                 var $element = $(DARK_MODE_TOGGLEABLE_ELEMENTS[i]);
                 $element.addClass("dark");
             }
-            $darkModeBtn.removeClass("button-filled-dark").addClass("button-light");
+            $darkModeBtn.removeClass("button-filled-dark").addClass("button-filled-light");
         } else {
             for (var _i = 0; _i < DARK_MODE_TOGGLEABLE_ELEMENTS.length; _i++) {
                 var _$element = $(DARK_MODE_TOGGLEABLE_ELEMENTS[_i]);
                 _$element.removeClass("dark");
             }
-            $darkModeBtn.addClass("button-filled-dark").removeClass("button-light");
+            $darkModeBtn.addClass("button-filled-dark").removeClass("button-filled-light");
         }
     };
 

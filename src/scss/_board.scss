@@ -1,0 +1,48 @@
+#board {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0px auto;
+    width: $square-length*2;
+    height: $square-length*2;
+    .cell {
+        // font
+        font-family: $mono-font;
+        // Keep width and height 
+        height: $square-length;
+        width: $square-length;
+        // Set font size to 5/6 of the square
+        font-size: $square-length*(7/10);
+        // Center
+        text-align: center;
+        // Make text unselectable
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+        // Nice link style hover effects
+        &:hover {
+            cursor: pointer;
+            background-color: darken($light-background-color, 5);
+        }
+
+        &.preview-move {
+            opacity: 0.6;
+        }
+        &.dark {
+            border-color: map-get($colors, "light");
+            &:hover {
+                background-color: lighten($dark-background-color, 5);
+            }
+        }
+    }
+    // START: Add lines
+    #row-1 .cell {
+        border-top: $board-line-width solid;
+        border-bottom: $board-line-width solid;
+    }
+    .cell-1 {
+        border-left: $board-line-width solid;
+        border-right: $board-line-width solid;
+    }
+    // END: Add lines
+}

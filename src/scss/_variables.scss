@@ -1,0 +1,43 @@
+$board-line-width: 2px;
+$square-length: 120px;
+
+$light-background-color: white;
+$dark-background-color: #2D2D2D;
+
+$dark-mode-font-color: #FFFFFF;
+
+$default-button-color: #707070;
+
+$colors: (
+    "aqua": #6BBAA7,
+    "orange": #FBA100,
+    "purple": rgb(107, 90, 172),
+    "gray": #B6A19E,
+    "green": #A4D555,
+    "dark": $dark-background-color,
+    "light": #F5F2D0
+);
+
+$light-colors: (
+    "aqua": rgb(53, 129, 111),
+    "orange": #B1750F,
+    "purple": rgb(82, 72, 124),
+    "gray": rgb(202, 186, 184),
+    "green": rgb(120, 155, 65),
+    "dark": $dark-background-color,
+    "light": rgb(245, 242, 208)
+);
+
+// Short getters
+@function color($name) {
+    @return map-get($map: $colors, $key: $name);
+}
+@function dark($name) {
+    @return map-get($map: $light-colors, $key: $name);
+}
+
+$button-height: 60px;
+
+$mono-font: "Source Code Pro", monospace;
+$header-font: monospace;
+$label-font: "Lucida Sans Unicode", "Lucida Grande", sans-serif;

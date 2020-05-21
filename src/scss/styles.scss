@@ -1,37 +1,11 @@
-$board-line-width: 2px;
-$square-length: 120px;
-
-$light-background-color: white;
-$dark-background-color: #2D2D2D;
-
-$dark-mode-font-color: #FFFFFF;
-
-$default-button-color: #707070;
-
-$colors: (
-    "aqua": #6BBAA7,
-    "orange": #FBA100,
-    "purple": #6C648B,
-    "gray": #B6A19E,
-    "green": #A4D555,
-    "dark": $dark-background-color,
-    "light": #F5F2D0
-);
-
-$light-colors: (
-    "aqua": rgb(131, 190, 177),
-    "orange": #FBA100,
-    "purple": rgb(143, 134, 185),
-    "gray": rgb(202, 186, 184),
-    "green": rgb(120, 155, 65),
-    "dark": $dark-background-color,
-    "light": rgb(245, 242, 208)
-);
-
-$button-height: 60px;
+@import "variables";
+@import "components";
+@import "board";
+@import "menu";
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 300;
+    font-weight: 200;
+    font-family: monospace;
 }
 
 body {
@@ -43,134 +17,9 @@ body {
     }
 }
 
-.button {
-    box-shadow: none;
-    height: $button-height;
-    font-size: $button-height*(3/10);
-    border-radius: 10px;
-    outline: none;
-    border: 1px $default-button-color solid;
-    color: $default-button-color;
-    transition: 0.2s;
-    background-color: $light-background-color;
-    &:hover {
-        cursor: pointer;
-        background-color: $default-button-color;
-        color: $light-background-color;
-    }
-    &.dark:hover {
-        background-color: $dark-background-color;
-        color: $dark-mode-font-color;
-        border-color: $dark-mode-font-color;
-    }
-}
-
-@each $color, $value in $colors {
-    // Buttons
-    .button-#{$color} {
-        border-color: $value;
-        color: $value;
-        &:hover {
-            cursor: pointer;
-            background-color: $value;
-            color: $light-background-color;
-        }
-        &.dark {
-            background-color: $dark-background-color;
-            border-color: map-get($light-colors, $color);
-            color: map-get($light-colors, $color);
-            &:hover {
-                background-color: map-get($light-colors, $color);
-                color: $dark-mode-font-color;
-                @if $color == "light" {
-                    color: map-get($light-colors, "dark");
-                }
-            }
-        }
-    }
-    .button-filled-#{$color} {
-        border-style: none;
-        background-color: $value;
-        color: $light-background-color;
-        &:hover {
-            color: $value;
-            background-color: $light-background-color;
-            border-style: solid;
-            border-color: $value;
-        }
-        &.dark {
-            background-color: map-get($light-colors, $color);
-            &:hover {
-                border-color: map-get($light-colors, $color);
-                color: map-get($light-colors, $color);
-            }
-        }
-    }
-}
-
-#start-menu {
-    // Flexbox stuff
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    & > * {
-        margin: 5px 20vw;
-    }
-}
-
-#board {
-    table-layout: fixed;
-    border-collapse: collapse;
-    margin: 0px auto;
-    width: $square-length*2;
-    height: $square-length*2;
-    .cell {
-        // Nice mono font
-        font-family: 'Source Code Pro', monospace;
-        font-weight: 200;
-        // Keep width and height 
-        height: $square-length;
-        width: $square-length;
-        // Set font size to 5/6 of the square
-        font-size: $square-length*(7/10);
-        // Center
-        text-align: center;
-        // Make text unselectable
-        -webkit-user-select: none; /* Safari */        
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* IE10+/Edge */
-        user-select: none; /* Standard */
-        // Nice link style hover effects
-        &:hover {
-            cursor: pointer;
-            background-color: darken($light-background-color, 5);
-        }
-
-        &.preview-move {
-            opacity: 0.6;
-        }
-        &.dark {
-            border-color: map-get($colors, "light");
-            &:hover {
-                background-color: lighten($dark-background-color, 5);
-            }
-        }
-    }
-    // START: Add lines
-    #row-1 .cell {
-        border-top: $board-line-width solid;
-        border-bottom: $board-line-width solid;
-    }
-    .cell-1 {
-        border-left: $board-line-width solid;
-        border-right: $board-line-width solid;
-    }
-    // END: Add lines
-}
-
-#game-buttons > button {
-    margin: 8px 2px;
+.dark {
+    background-color: $dark-background-color;
+    color: $dark-mode-font-color;
 }
 
 #dark-mode-button {
@@ -179,10 +28,12 @@ body {
 	bottom: 10px;
 }
 
+// Page title font
 #page-title, #winner {
-    font-family: monospace;
+    font-family: $header-font;
 }
 
+// For now, just the fake cursor
 .blinking {
     animation: blinking 1s infinite;
 }

@@ -14,21 +14,27 @@
         <h1 id="page-title">&gt;tic tac toe<span class="blinking">_</span></h1>
         <div id="start-menu">
             <!-- Get who is o -->
-            <div id="who-is-o">
-                <button id="ply-is-o" class="toggle button button-filled-aqua selected">Player is O</button>
-                <button id="com-is-o" class="toggle button button-gray">Computer is O</button>
+            <div class="form-group" id="who-is-o">
+                <label class="label" for="o-toggle">Who will be O?</label>
+                <div id="o-toggle" class="toggles">
+                    <button id="ply-is-o" class="toggle button button-filled-aqua selected">Player</button>
+                    <button id="com-is-o" class="toggle button button-gray">Computer</button>
+                </div>
             </div>
             <!-- Whoever is moving first -->
-            <div id="who-is-moving-first">
-                <button id="ply-is-moving-first" class="toggle button button-filled-purple selected">
-                    Player is moving first
-                </button>
-                <button id="com-is-moving-first" class="toggle button button-gray">
-                    Computer is moving first
-                </button>
-                <button id="rnd-is-moving-first" class="toggle button button-gray">
-                    Random player is moving first
-                </button>
+            <div class="form-group" id="who-is-moving-first">
+                <label class="label" for="moving-first-toggle">Who will move first?</label>
+                <div id="moving-first-toggle" class="toggles">
+                    <button id="ply-is-moving-first" class="toggle button button-filled-purple selected">
+                        Player
+                    </button>
+                    <button id="com-is-moving-first" class="toggle button button-gray">
+                        Computer
+                    </button>
+                    <button id="rnd-is-moving-first" class="toggle button button-gray">
+                        Random
+                    </button>
+                </div>
             </div>
             <button class="button button-green" id="play-btn">Play!</button>
             <button style="display: none;" class="button button-green" id="continue-btn">Continue</button>
