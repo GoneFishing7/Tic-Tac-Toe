@@ -5,12 +5,10 @@ var symbols = {
     "blank": " "
 }
 
-var movingFirstInput;
-var movingFirst;
 var board;
+var state;
 var turn;
 var gameOver;
-var playerIsOForNextGame;
 const DEBUG_MODE = false;
 
 $(document).ready(function () {
@@ -20,9 +18,8 @@ $(document).ready(function () {
         // Hide options/start menu
         $("#start-menu").hide();
         // Check who is o and set symbols accordingly
-        let playerIsO = $("#who-is-o .selected").attr("id").replace("-is-o", "") == "ply";
-        playerIsOForNextGame = playerIsO;
-        if (playerIsO) {
+        let settings = getOptions();
+        if (settings.playerIsO) {
             symbols["player"] = 'O';
             symbols["computer"] = 'X';
         } else {
@@ -30,15 +27,13 @@ $(document).ready(function () {
             symbols["computer"] = 'O';
         }
         // Check who is moving first
-        movingFirstInput = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
-        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
-        turn = movingFirst;
+        turn = settings.movingFirst;
         // Show the game page
         $("#game").show();
         // Init board
         board = new Board(DEBUG_MODE ? "DEBUG" : null);
         renderBoard(board);
-        if (movingFirst === "com") {
+        if (settings.movingFirst === "com") {
             makeComMove();
             // Check for win
             state = board.getGameState()
@@ -58,16 +53,25 @@ $(document).ready(function () {
     });
 
     // Who is O toggle
-    $("#who-is-o .toggle").on('click', function () {
-        $("#who-is-o .toggle").toggleClass("button-filled-aqua selected button-gray")
+    $("#o-toggle .toggle").on('click', function () {
+        $("#who-is-o .toggle").toggleClass("button-filled-purple selected button-gray")
     });
 
     // Moving first toggle
-    $("#who-is-moving-first .toggle").on('click', function () {
+    $("#moving-first-toggle .toggle").on('click', function () {
         if ($(this).hasClass("selected")) {
             return;
         }
-        $("#who-is-moving-first .toggle").removeClass("selected button-filled-purple").addClass("button-gray");
+        $("#moving-first-toggle .toggle").removeClass("selected button-filled-purple").addClass("button-gray");
+        $(this).addClass("selected button-filled-purple").removeClass("button-gray");
+    });
+
+    // Difficulty toggle
+    $("#com-mode-toggle .toggle").on('click', function () {
+        if ($(this).hasClass("selected")) {
+            return;
+        }
+        $("#com-mode-toggle .toggle").removeClass("selected button-filled-purple").addClass("button-gray");
         $(this).addClass("selected button-filled-purple").removeClass("button-gray");
     });
 
@@ -123,6 +127,7 @@ $(document).ready(function () {
             }
         },
         mouseleave: function () {
+            // NOTE: Not trustworthy after being clicked, for some reason.
             if ($(this).hasClass("blank") && turn === "ply") {
                 $(this).text(symbols['blank']);
                 $(this).removeClass("preview-move");
@@ -147,12 +152,14 @@ $(document).ready(function () {
                 $element.addClass("dark");
             }
             $darkModeBtn.removeClass("button-filled-dark").addClass("button-filled-light")
+                .text("Light Mode! 🌻")
         } else {
             for (let i = 0; i < DARK_MODE_TOGGLEABLE_ELEMENTS.length; i++) {
                 let $element = $(DARK_MODE_TOGGLEABLE_ELEMENTS[i]);
                 $element.removeClass("dark");
             }
             $darkModeBtn.addClass("button-filled-dark").removeClass("button-filled-light")
+                .text("Dark Mode! 🌙")
         }
     };
 
@@ -164,19 +171,16 @@ $(document).ready(function () {
     });
 
     $("#continue-btn").on('click', function () {
+        let settings = getOptions();
         $("#start-menu").hide();
-        // Check who is o and set symbols accordingly
-        playerIsOForNextGame = $("#who-is-o .selected").attr("id").replace("-is-o", "") == "ply";
-        // Check who is moving first
-        movingFirstInput = $("#who-is-moving-first .selected").attr("id").replace("-is-moving-first", "");
-        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
         $("#game").show();
     });
 
     // Reset button
     $("#reset-button").on('click', function () {
+        let settings = getOptions();
         board = new Board();
-        if (playerIsOForNextGame) {
+        if (settings.playerIsO) {
             symbols["player"] = 'O';
             symbols["computer"] = 'X';
         } else {
@@ -186,8 +190,7 @@ $(document).ready(function () {
         $(".cell").addClass("blank");
         $("#winner").text("");
         renderBoard(board);
-        movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
-        turn = movingFirst;
+        turn = settings.movingFirst;
         gameOver = false;
         if (turn === "com") {
             makeComMove();
@@ -216,6 +219,18 @@ $(document).ready(function () {
             for (let cellIndex = 0; cellIndex < 3; cellIndex++) {
                 $(`#board #${rowIndex}${cellIndex}`).text(board.getSquare(rowIndex, cellIndex));
             }
+        }
+    }
+
+    function getOptions() {
+        let movingFirstInput = $("#moving-first-toggle .selected").attr("id").replace("-is-moving-first", "");
+        let movingFirst = movingFirstInput == "rnd" ? (Math.random() < 0.5 ? "ply" : "com") : movingFirstInput;
+        let playerIsO = $("#o-toggle .selected").attr("id").replace("-is-o", "") == "ply";
+        let comMode
+        return {
+            movingFirst: movingFirst,
+            playerIsO: playerIsO,
+            comMode: comMode
         }
     }
 });

@@ -16,7 +16,6 @@
         &:hover {
             background-color: dark($color);
             @if lightness(color($color)) > 65% {
-                @debug "#{$color}: #{lightness(color($color))}";
                 color: $dark-background-color;
             } @else {
                 color: $light-background-color;
@@ -38,7 +37,6 @@
     &.dark {
         background-color: dark($color);
         @if lightness(color($color)) > 65% {
-            @debug "#{$color}: #{lightness(color($color))}";
             color: $dark-background-color;
         } @else {
             color: $light-background-color;
