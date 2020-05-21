@@ -1,12 +1,12 @@
 class AI {
     static findBestMove(board, mode) {
-        if (!mode) {
+        if (mode === "easy") {
+            return this.findBestMoveFromList(board);
+        } else if (mode === "medium") {
+            return this.findRandomMove(board);
+        } else { 
             return this.findBestMinimaxMove(board);
         }
-        if (mode === "list") {
-            return this.findBestMoveFromList(board);
-        }
-        return this.findRandomMove(board);
     }
 
     static findBestMinimaxMove(board) {

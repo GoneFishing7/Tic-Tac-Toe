@@ -11,6 +11,7 @@ var board;
 var state;
 var turn;
 var gameOver;
+var currentComMode;
 var DEBUG_MODE = false;
 
 $(document).ready(function () {
@@ -30,13 +31,15 @@ $(document).ready(function () {
         }
         // Check who is moving first
         turn = settings.movingFirst;
+        // Get computer difficulty
+        currentComMode = settings.comMode;
         // Show the game page
         $("#game").show();
         // Init board
         board = new Board(DEBUG_MODE ? "DEBUG" : null);
         renderBoard(board);
         if (settings.movingFirst === "com") {
-            makeComMove();
+            makeComMove(currentComMode);
             // Check for win
             state = board.getGameState();
             if (state !== symbols['blank']) {
@@ -106,7 +109,7 @@ $(document).ready(function () {
                 announceWinner(_winner2);
                 return;
             }
-            makeComMove();
+            makeComMove(currentComMode);
             // Check for win again
             state = board.getGameState();
             if (state !== symbols['blank']) {
@@ -171,7 +174,6 @@ $(document).ready(function () {
     });
 
     $("#continue-btn").on('click', function () {
-        var settings = getOptions();
         $("#start-menu").hide();
         $("#game").show();
     });
@@ -191,9 +193,10 @@ $(document).ready(function () {
         $("#winner").text("");
         renderBoard(board);
         turn = settings.movingFirst;
+        currentComMode = settings.comMode;
         gameOver = false;
         if (turn === "com") {
-            makeComMove();
+            makeComMove(currentComMode);
             turn = "ply";
         }
     });
@@ -206,8 +209,8 @@ $(document).ready(function () {
         }
     }
 
-    function makeComMove() {
-        var move = AI.findBestMove(board);
+    function makeComMove(mode) {
+        var move = AI.findBestMove(board, mode);
         board.setSquare(symbols["computer"], move.row, move.cell);
         $("table#board td#" + move.row + move.cell).removeClass("blank");
         renderBoard(board);
@@ -226,7 +229,7 @@ $(document).ready(function () {
         var movingFirstInput = $("#moving-first-toggle .selected").attr("id").replace("-is-moving-first", "");
         var movingFirst = movingFirstInput == "rnd" ? Math.random() < 0.5 ? "ply" : "com" : movingFirstInput;
         var playerIsO = $("#o-toggle .selected").attr("id").replace("-is-o", "") == "ply";
-        var comMode = void 0;
+        var comMode = $("#com-mode-toggle .selected").attr("id");
         return {
             movingFirst: movingFirst,
             playerIsO: playerIsO,
