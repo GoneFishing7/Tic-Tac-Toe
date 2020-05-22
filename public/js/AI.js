@@ -29,7 +29,6 @@ var AI = function () {
             if (board.getGameState() !== symbols['blank'] || possibleMoves.length == 0) {
                 return null;
             }
-            console.log("board: " + board);
             var winningMoves = [];
             var nonLosingMoves = [];
             var losingMoves = [];

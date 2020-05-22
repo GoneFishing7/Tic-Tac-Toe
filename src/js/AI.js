@@ -16,7 +16,6 @@ class AI {
         if (board.getGameState() !== symbols['blank'] || possibleMoves.length == 0) {
             return null;
         }
-        console.log(`board: ${board}`);
         let winningMoves = [];
         let nonLosingMoves = [];
         let losingMoves = [];
