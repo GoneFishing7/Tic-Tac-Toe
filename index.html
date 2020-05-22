@@ -40,12 +40,19 @@
             <div class="form-group" id="com-mode">
                 <label for="com-mode-toggle" class="label">Computer Difficulty</label>
                 <div id="com-mode-toggle" class="toggles">
+                    <!-- Pick highest up move from list; For some reason, seems easier-->
                     <button id="easy" class="toggle button button-gray">
 						Easy
-					</button>
+                    </button>
+                    <!-- Pick random move from board -->
 					<button id="medium" class="toggle button button-filled-purple selected">
 						Medium
-					</button>
+                    </button>
+                    <!-- Minimax with limited depth -->
+                    <button id="hard" class="toggle button button-gray">
+                        Hard
+                    </button>
+                    <!-- Minimax with unlimited depth -->
 					<button id="impossible" class="toggle button button-gray">
 						Impossible
 					</button>
