@@ -121,7 +121,7 @@ var Board = function () {
             for (var i = 0; i < this.squares.length; i++) {
                 returnString += i + 1 + " |";
                 for (var j = 0; j < this.squares[i].length; j++) {
-                    returnString += " " + this.getSquare(j, i) + " |";
+                    returnString += " " + this.getSquare(i, j) + " |";
                 }
                 returnString += "\n  " + horizontalLine;
             }

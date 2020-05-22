@@ -5,74 +5,50 @@ class AI {
         } else if (mode === "medium") {
             return this.findRandomMove(board);
         } else if (mode === "hard") {
-            return this.findLimitedMinimaxMove(board);
-        } else { 
+            return this.findBestMoveBadAI(board);
+        } else {
             return this.findBestMinimaxMove(board);
         }
     }
 
-    static findLimitedMinimaxMove(board) {
+    static findBestMoveBadAI(board) {
         let possibleMoves = board.getBlankSquares();
-        let bestMoves = [];
-        let bestMoveEval = -2;
-        for (let moveIndex = 0; moveIndex < possibleMoves.length; moveIndex++) {
-            let move = possibleMoves[moveIndex]
-            let boardWithNewMove = board.copyWithMove(symbols["computer"], move.row, move.cell);
-            let minimaxEval = this.evalMoveLimitedMinimax(boardWithNewMove, -1, 0);
-            if (minimaxEval > bestMoveEval) {
-                bestMoveEval = minimaxEval;
-                bestMoves = [move];
-            } else if (minimaxEval == bestMoveEval) {
-                bestMoves.push(move);
-            }
-        }
-        if (bestMoveEval == -2) {
-            console.log("Something bad happened!");
+        if (board.getGameState() !== symbols['blank'] || possibleMoves.length == 0) {
             return null;
         }
-        let bestMove = Utils.randomElementFromArray(bestMoves);
-        return bestMove;
-    }
-
-    static evalMoveLimitedMinimax(board, turn, depth) {
-        const MAX_DEPTH = 5; // 1 "Depth" is a move one way, 2 "depths" is one move from each side
-        if (depth >= MAX_DEPTH) {
-            return turn;
-        }
-        let possibleMoves = board.getBlankSquares();
-        // Check for terminal states
-        let gameState = board.getGameState();
-        if (gameState !== symbols["blank"]) {
-            return gameState == symbols["computer"] ? 1 : -1;
-        }
-        if (possibleMoves.length < 1) {
-            return 0;
-        }
-        let bestMoveEval = 0;
-        if (turn == -1) {
-            // MINI
-            bestMoveEval = 2;
-            for (let i = 0; i < possibleMoves.length; i++) {
-                let move = possibleMoves[i];
-                let boardWithNewMove = board.copyWithMove(symbols["player"], move.row, move.cell);
-                let currentMoveEval = this.evalMoveLimitedMinimax(boardWithNewMove, -turn, depth+1);
-                if (currentMoveEval < bestMoveEval) {
-                    bestMoveEval = currentMoveEval;
+        console.log(`board: ${board}`);
+        let winningMoves = [];
+        let nonLosingMoves = [];
+        let losingMoves = [];
+        moveLoop:
+        for (const move of possibleMoves) {
+            let boardWithNewMove = board.copyWithMove(symbols['computer'], move.row, move.cell);
+            let gameState = boardWithNewMove.getGameState();
+            if (gameState === symbols['computer']) {
+                winningMoves.push(move);
+                continue;
+            }
+            let possiblePlayerResponses = boardWithNewMove.getBlankSquares();
+            for (const playerResponse of possiblePlayerResponses) {
+                let boardWithPlayerResponse = boardWithNewMove.copyWithMove(symbols['player'], playerResponse.row, playerResponse.cell);
+                let gameStateWithPlayerMove = boardWithPlayerResponse.getGameState();
+                if (gameStateWithPlayerMove === symbols['player']) {
+                    losingMoves.push(move);
+                    continue moveLoop;
                 }
             }
-        } else {
-            // MAX
-            bestMoveEval = -2;
-            for (let i = 0; i < possibleMoves.length; i++) {
-                let move = possibleMoves[i];
-                let boardWithNewMove = board.copyWithMove(symbols["computer"], move.row, move.cell);
-                let currentMoveEval = this.evalMoveLimitedMinimax(boardWithNewMove, -turn, depth+1);
-                if (currentMoveEval > bestMoveEval) {
-                    bestMoveEval = currentMoveEval;
-                }
-            }
+            nonLosingMoves.push(move);
         }
-        return bestMoveEval;
+        console.log({ winningMoves, nonLosingMoves, losingMoves });
+        if (winningMoves.length > 0) {
+            return Utils.randomElementFromArray(winningMoves);
+        } else if (nonLosingMoves.length > 0) {
+            return Utils.randomElementFromArray(nonLosingMoves);
+        } else if (losingMoves.length > 0) {
+            return Utils.randomElementFromArray(losingMoves);
+        }
+        // No moves
+        return null
     }
 
     static findBestMinimaxMove(board) {
@@ -136,16 +112,42 @@ class AI {
     }
 
     static findBestMoveFromList(board) {
-        let favouredMoves = [
-            {row: 1, cell: 1},
-            {row: 0, cell: 1},
-            {row: 1, cell: 2},
-            {row: 2, cell: 1},
-            {row: 1, cell: 0},
-            {row: 0, cell: 0},
-            {row: 0, cell: 2},
-            {row: 2, cell: 2},
-            {row: 2, cell: 0},
+        let favouredMoves = [{
+                row: 1,
+                cell: 1
+            },
+            {
+                row: 0,
+                cell: 1
+            },
+            {
+                row: 1,
+                cell: 2
+            },
+            {
+                row: 2,
+                cell: 1
+            },
+            {
+                row: 1,
+                cell: 0
+            },
+            {
+                row: 0,
+                cell: 0
+            },
+            {
+                row: 0,
+                cell: 2
+            },
+            {
+                row: 2,
+                cell: 2
+            },
+            {
+                row: 2,
+                cell: 0
+            },
         ];
         for (let moveIndex = 0; moveIndex < favouredMoves.length; moveIndex++) {
             const currentMove = favouredMoves[moveIndex];
@@ -155,7 +157,7 @@ class AI {
         }
         return null;
     }
-    
+
     static findRandomMove(board) {
         let blankSquares = board.getBlankSquares();
         return Utils.randomElementFromArray(blankSquares);
