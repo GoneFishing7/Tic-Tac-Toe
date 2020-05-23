@@ -37,6 +37,7 @@ $(document).ready(function () {
         board = new Board(DEBUG_MODE ? "DEBUG" : null);
         renderBoard(board);
         if (settings.movingFirst === "ply2" && currentPlayer2Mode !== "human") {
+            console.log({ currentPlayer2Mode, comMode });
             makeComMove(currentPlayer2Mode);
             // Check for win
             state = board.getGameState()
@@ -201,7 +202,7 @@ $(document).ready(function () {
         turn = settings.movingFirst;
         currentPlayer2Mode = settings.comMode;
         gameOver = false;
-        if (turn === "ply2") {
+        if (turn === "ply2" && currentPlayer2Mode !== "human") {
             makeComMove(currentPlayer2Mode);
             turn = "ply";
         }
