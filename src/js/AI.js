@@ -1,5 +1,6 @@
 class AI {
     static findBestMove(board, mode) {
+        console.log({ mode });
         if (mode === "easy") {
             return this.findBestMoveFromList(board);
         } else if (mode === "medium") {
@@ -21,9 +22,9 @@ class AI {
         let losingMoves = [];
         moveLoop:
         for (const move of possibleMoves) {
-            let boardWithNewMove = board.copyWithMove(symbols['computer'], move.row, move.cell);
+            let boardWithNewMove = board.copyWithMove(symbols['player2'], move.row, move.cell);
             let gameState = boardWithNewMove.getGameState();
-            if (gameState === symbols['computer']) {
+            if (gameState === symbols['player2']) {
                 winningMoves.push(move);
                 continue;
             }
@@ -38,7 +39,6 @@ class AI {
             }
             nonLosingMoves.push(move);
         }
-        console.log({ winningMoves, nonLosingMoves, losingMoves });
         if (winningMoves.length > 0) {
             return Utils.randomElementFromArray(winningMoves);
         } else if (nonLosingMoves.length > 0) {
@@ -56,7 +56,7 @@ class AI {
         let bestMoveEval = -2;
         for (let moveIndex = 0; moveIndex < possibleMoves.length; moveIndex++) {
             let move = possibleMoves[moveIndex]
-            let boardWithNewMove = board.copyWithMove(symbols["computer"], move.row, move.cell);
+            let boardWithNewMove = board.copyWithMove(symbols["player2"], move.row, move.cell);
             let minimaxEval = this.evalMoveMinimax(boardWithNewMove, -1);
             if (minimaxEval > bestMoveEval) {
                 bestMoveEval = minimaxEval;
@@ -78,7 +78,7 @@ class AI {
         // Check for terminal states
         let gameState = board.getGameState();
         if (gameState !== symbols["blank"]) {
-            return gameState == symbols["computer"] ? 1 : -1;
+            return gameState == symbols["player2"] ? 1 : -1;
         }
         if (possibleMoves.length < 1) {
             return 0;
@@ -100,7 +100,7 @@ class AI {
             bestMoveEval = -2;
             for (let i = 0; i < possibleMoves.length; i++) {
                 let move = possibleMoves[i];
-                let boardWithNewMove = board.copyWithMove(symbols["computer"], move.row, move.cell);
+                let boardWithNewMove = board.copyWithMove(symbols["player2"], move.row, move.cell);
                 let currentMoveEval = this.evalMoveMinimax(boardWithNewMove, -turn);
                 if (currentMoveEval > bestMoveEval) {
                     bestMoveEval = currentMoveEval;

@@ -3,7 +3,7 @@
 // NOTE: This may be the most hacky program I've ever made.
 var symbols = {
     "player": null,
-    "computer": null,
+    "player2": null,
     "blank": " "
 };
 
@@ -11,7 +11,7 @@ var board;
 var state;
 var turn;
 var gameOver;
-var currentComMode;
+var currentPlayer2Mode;
 var DEBUG_MODE = false;
 
 $(document).ready(function () {
@@ -24,26 +24,26 @@ $(document).ready(function () {
         var settings = getOptions();
         if (settings.playerIsO) {
             symbols["player"] = 'O';
-            symbols["computer"] = 'X';
+            symbols["player2"] = 'X';
         } else {
             symbols["player"] = 'X';
-            symbols["computer"] = 'O';
+            symbols["player2"] = 'O';
         }
         // Check who is moving first
         turn = settings.movingFirst;
         // Get computer difficulty
-        currentComMode = settings.comMode;
+        currentPlayer2Mode = settings.comMode;
         // Show the game page
         $("#game").show();
         // Init board
         board = new Board(DEBUG_MODE ? "DEBUG" : null);
         renderBoard(board);
-        if (settings.movingFirst === "com") {
-            makeComMove(currentComMode);
+        if (settings.movingFirst === "ply2" && currentPlayer2Mode !== "human") {
+            makeComMove(currentPlayer2Mode);
             // Check for win
             state = board.getGameState();
             if (state !== symbols['blank']) {
-                var winner = state === symbols['player'] ? "Player" : "Computer";
+                var winner = state === symbols['player'] ? "Player" : "Player 2";
                 gameOver = true;
                 announceWinner(winner);
                 return;
@@ -82,24 +82,24 @@ $(document).ready(function () {
 
     $(".cell").on({
         click: function click() {
+            var settings = getOptions();
             if (!$(this).hasClass("blank")) {
                 return;
             }
-            if (turn === 'com' || gameOver) {
+            if (turn === "ply2" && currentPlayer2Mode !== "human" || gameOver) {
                 return;
-            } else {
-                turn = 'com';
             }
             $(this).removeClass('blank preview-move');
             var id = $(this).attr("id");
             var row = id.charAt(0);
             var cell = id.charAt(1);
-            board.setSquare(symbols["player"], row, cell);
+            console.log({ turn: turn });
+            board.setSquare(symbols[turn === "ply" ? "player" : "player2"], row, cell);
             renderBoard(board);
             // Check for win
             var state = board.getGameState();
             if (state !== symbols['blank']) {
-                var winner = state === symbols['player'] ? "Player" : "Computer";
+                var winner = state === symbols['player'] ? "Player 1" : "Player 2";
                 gameOver = true;
                 announceWinner(winner);
                 return;
@@ -109,31 +109,37 @@ $(document).ready(function () {
                 announceWinner(_winner2);
                 return;
             }
-            makeComMove(currentComMode);
-            // Check for win again
-            state = board.getGameState();
-            if (state !== symbols['blank']) {
-                var _winner3 = state === symbols['player'] ? "Player" : "Computer";
-                gameOver = true;
-                announceWinner(_winner3);
-                return;
-            } else if (board.getBlankSquares().length == 0) {
-                var _winner4 = "Tie";
-                gameOver = true;
-                announceWinner(_winner4);
-                return;
+            turn = turn === "ply" ? "ply2" : "ply";
+            if (currentPlayer2Mode !== "human") {
+                makeComMove(currentPlayer2Mode);
+                // Check for win again
+                state = board.getGameState();
+                if (state !== symbols['blank']) {
+                    var _winner3 = state === symbols['player'] ? "Player 1" : "Player 2";
+                    gameOver = true;
+                    announceWinner(_winner3);
+                    return;
+                } else if (board.getBlankSquares().length == 0) {
+                    var _winner4 = "Tie";
+                    gameOver = true;
+                    announceWinner(_winner4);
+                    return;
+                }
             }
         },
         mouseenter: function mouseenter() {
-            var isBlank = $(this).hasClass("blank");
-            if ($(this).hasClass("blank") && turn === "ply") {
-                $(this).text(symbols['player']);
+            if ($(this).hasClass("blank") && (turn === "ply" || currentPlayer2Mode == "human")) {
+                if (turn === "ply") {
+                    $(this).text(symbols['player']);
+                } else if (currentPlayer2Mode === "human") {
+                    $(this).text(symbols['player2']);
+                }
                 $(this).addClass("preview-move");
             }
         },
         mouseleave: function mouseleave() {
             // NOTE: Not trustworthy after being clicked, for some reason.
-            if ($(this).hasClass("blank") && turn === "ply") {
+            if ($(this).hasClass("blank") && (turn === "ply" || currentPlayer2Mode == "human")) {
                 $(this).text(symbols['blank']);
                 $(this).removeClass("preview-move");
             }
@@ -184,19 +190,19 @@ $(document).ready(function () {
         board = new Board();
         if (settings.playerIsO) {
             symbols["player"] = 'O';
-            symbols["computer"] = 'X';
+            symbols["player2"] = 'X';
         } else {
             symbols["player"] = 'X';
-            symbols["computer"] = 'O';
+            symbols["player2"] = 'O';
         }
         $(".cell").addClass("blank");
         $("#winner").text("");
         renderBoard(board);
         turn = settings.movingFirst;
-        currentComMode = settings.comMode;
+        currentPlayer2Mode = settings.comMode;
         gameOver = false;
-        if (turn === "com") {
-            makeComMove(currentComMode);
+        if (turn === "ply2") {
+            makeComMove(currentPlayer2Mode);
             turn = "ply";
         }
     });
@@ -211,7 +217,7 @@ $(document).ready(function () {
 
     function makeComMove(mode) {
         var move = AI.findBestMove(board, mode);
-        board.setSquare(symbols["computer"], move.row, move.cell);
+        board.setSquare(symbols["player2"], move.row, move.cell);
         $("table#board td#" + move.row + move.cell).removeClass("blank");
         renderBoard(board);
         turn = "ply";
@@ -227,7 +233,7 @@ $(document).ready(function () {
 
     function getOptions() {
         var movingFirstInput = $("#moving-first-toggle .selected").attr("id").replace("-is-moving-first", "");
-        var movingFirst = movingFirstInput == "rnd" ? Math.random() < 0.5 ? "ply" : "com" : movingFirstInput;
+        var movingFirst = movingFirstInput == "rnd" ? Math.random() < 0.5 ? "ply" : "ply2" : movingFirstInput;
         var playerIsO = $("#o-toggle .selected").attr("id").replace("-is-o", "") == "ply";
         var comMode = $("#com-mode-toggle .selected").attr("id");
         return {

@@ -31,7 +31,7 @@ var Board = function () {
     }, {
         key: "initDebugBoard",
         value: function initDebugBoard() {
-            this.squares = [[symbols["player"], symbols["blank"], symbols["computer"]], [symbols["computer"], symbols["blank"], symbols["blank"]], [symbols["computer"], symbols["player"], symbols["player"]]];
+            this.squares = [[symbols["player"], symbols["blank"], symbols["player2"]], [symbols["player2"], symbols["blank"], symbols["blank"]], [symbols["player2"], symbols["player"], symbols["player"]]];
         }
     }, {
         key: "getGameState",

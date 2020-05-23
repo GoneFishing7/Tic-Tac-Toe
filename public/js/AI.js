@@ -12,6 +12,7 @@ var AI = function () {
     _createClass(AI, null, [{
         key: "findBestMove",
         value: function findBestMove(board, mode) {
+            console.log({ mode: mode });
             if (mode === "easy") {
                 return this.findBestMoveFromList(board);
             } else if (mode === "medium") {
@@ -40,9 +41,9 @@ var AI = function () {
                 moveLoop: for (var _iterator = possibleMoves[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var move = _step.value;
 
-                    var boardWithNewMove = board.copyWithMove(symbols['computer'], move.row, move.cell);
+                    var boardWithNewMove = board.copyWithMove(symbols['player2'], move.row, move.cell);
                     var gameState = boardWithNewMove.getGameState();
-                    if (gameState === symbols['computer']) {
+                    if (gameState === symbols['player2']) {
                         winningMoves.push(move);
                         continue;
                     }
@@ -94,7 +95,6 @@ var AI = function () {
                 }
             }
 
-            console.log({ winningMoves: winningMoves, nonLosingMoves: nonLosingMoves, losingMoves: losingMoves });
             if (winningMoves.length > 0) {
                 return Utils.randomElementFromArray(winningMoves);
             } else if (nonLosingMoves.length > 0) {
@@ -113,7 +113,7 @@ var AI = function () {
             var bestMoveEval = -2;
             for (var moveIndex = 0; moveIndex < possibleMoves.length; moveIndex++) {
                 var move = possibleMoves[moveIndex];
-                var boardWithNewMove = board.copyWithMove(symbols["computer"], move.row, move.cell);
+                var boardWithNewMove = board.copyWithMove(symbols["player2"], move.row, move.cell);
                 var minimaxEval = this.evalMoveMinimax(boardWithNewMove, -1);
                 if (minimaxEval > bestMoveEval) {
                     bestMoveEval = minimaxEval;
@@ -136,7 +136,7 @@ var AI = function () {
             // Check for terminal states
             var gameState = board.getGameState();
             if (gameState !== symbols["blank"]) {
-                return gameState == symbols["computer"] ? 1 : -1;
+                return gameState == symbols["player2"] ? 1 : -1;
             }
             if (possibleMoves.length < 1) {
                 return 0;
@@ -158,7 +158,7 @@ var AI = function () {
                 bestMoveEval = -2;
                 for (var _i = 0; _i < possibleMoves.length; _i++) {
                     var _move = possibleMoves[_i];
-                    var _boardWithNewMove = board.copyWithMove(symbols["computer"], _move.row, _move.cell);
+                    var _boardWithNewMove = board.copyWithMove(symbols["player2"], _move.row, _move.cell);
                     var _currentMoveEval = this.evalMoveMinimax(_boardWithNewMove, -turn);
                     if (_currentMoveEval > bestMoveEval) {
                         bestMoveEval = _currentMoveEval;

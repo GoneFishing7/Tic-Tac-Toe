@@ -17,8 +17,8 @@
             <div class="form-group" id="who-is-o">
                 <label class="label" for="o-toggle">Who is O?</label>
                 <div id="o-toggle" class="toggles">
-                    <button id="ply-is-o" class="toggle button button-filled-purple selected">Player</button>
-                    <button id="com-is-o" class="toggle button button-gray">Computer</button>
+                    <button id="ply-is-o" class="toggle button button-filled-purple selected">Player 1</button>
+                    <button id="ply2-is-o" class="toggle button button-gray">Player 2</button>
                 </div>
             </div>
             <!-- Whoever is moving first -->
@@ -29,32 +29,35 @@
                         Random
                     </button>
                     <button id="ply-is-moving-first" class="toggle button button-gray">
-                        Player
+                        Player 1
                     </button>
-                    <button id="com-is-moving-first" class="toggle button button-gray">
-                        Computer
+                    <button id="ply2-is-moving-first" class="toggle button button-gray">
+                        Player 2
                     </button>
                 </div>
             </div>
             <!-- Computer difficulty -->
             <div class="form-group" id="com-mode">
-                <label for="com-mode-toggle" class="label">Computer Difficulty</label>
+                <label for="com-mode-toggle" class="label">Player 2</label>
                 <div id="com-mode-toggle" class="toggles">
                     <!-- Pick highest up move from list; For some reason, seems easier-->
                     <button id="easy" class="toggle button button-gray">
-						Easy
+						Easy Com
                     </button>
                     <!-- Pick random move from board -->
 					<button id="medium" class="toggle button button-filled-purple selected">
-						Medium
+						Medium Com
                     </button>
                     <!-- Minimax with limited depth -->
                     <button id="hard" class="toggle button button-gray">
-                        Hard
+                        Hard Com
                     </button>
                     <!-- Minimax with unlimited depth -->
 					<button id="impossible" class="toggle button button-gray">
-						Impossible
+						Impossible Com
+                    </button>
+                    <button id="human" class="toggle button button-gray">
+                        Human
                     </button>
                 </div>
             </div>
